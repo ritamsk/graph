@@ -80,7 +80,7 @@ lon.sort()
 delat = []
 delon = []
 
-#перевод в декартовы коорлинаты
+#перевод в декартовы координаты
 for i in lat:
     latr = (i*math.pi)/180.0
     dey = math.log2(math.tan((math.pi/4.0) + (latr/2.0)))
