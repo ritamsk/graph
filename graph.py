@@ -7,9 +7,9 @@ import math
 
 dwg = svgwrite.Drawing('graph.svg', profile='tiny')
 source_dir = os.getcwd()
-map= os.path.join(source_dir, 'map') #'map' - файл с данными
-mapparsed = bs4.BeautifulSoup(io.open(map, encoding='utf-8'), 'xml')
-ways = bs4.BeautifulSoup(io.open(map, encoding='utf-8'), 'xml', parse_only=bs4.SoupStrainer('way'))
+map_file= os.path.join(source_dir, 'map.osm') #'map' - файл с данными
+mapparsed = bs4.BeautifulSoup(io.open(map_file, encoding='utf-8'), 'xml')
+ways = bs4.BeautifulSoup(io.open(map_file, encoding='utf-8'), 'xml', parse_only=bs4.SoupStrainer('way'))
 nodes = mapparsed.findAll('node')
 
 highways = []
