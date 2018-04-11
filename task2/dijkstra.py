@@ -15,7 +15,7 @@ def adjDijkstra(n, start, adjs, weight):
             if d[i] + weight.get(i.__str__() + ', ' + j.__str__()) < d[j]:
                 d[j] = d[i] + weight.get(i.__str__() + ', ' + j.__str__())
                 p[j] = i
-        min_dist = INF
+        min_d = INF
         for i in range(n):
             if not seen[i] and d[i] < min_d:
                 min_d = d[i]
