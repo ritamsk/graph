@@ -1,5 +1,5 @@
 import heapq
-#import graphs
+import math
 import binsearch as b
 class PriorityQueue:
     def __init__(self):
@@ -15,46 +15,46 @@ class PriorityQueue:
         return heapq.heappop(self.elements)[1]
 
 
-def heuristic(nodea, nodeb, nodes, lat, lon, delat, delon, adjlf):
+
+def heuristic(nodea, nodeb, nodes, lat, lon, delat, delon, adjlf, whatmetric):
     id= adjlf[nodea].get('node')
-    node = nodes[b.binsearch_node(nodes, id)]
-    y = float(node.attrs["lat"])
-    x = float(node.attrs["lon"])
-    k = b.binsearch(lat, y)
-    l = b.binsearch(lon, x)
-    deya = delat[k]
-    dexa = delon[l]
+    dexa, deya = b.findlatlon(id, nodes, lat, lon, delat, delon)
     id = adjlf[nodeb].get('node')
-    node = nodes[b.binsearch_node(nodes, id)]
-    y = float(node.attrs["lat"])
-    x = float(node.attrs["lon"])
-    k = b.binsearch(lat, y)
-    l = b.binsearch(lon, x)
-    deyb = delat[k]
-    dexb = delon[l]
-    return abs(dexa - dexb) + abs(deya - deyb)
+    dexb, deyb = b.findlatlon(id, nodes, lat, lon, delat, delon)
+    tmplat = abs(dexa - dexb)
+    tmplon = abs(deya - deyb)
+    if whatmetric == 1:
+        tmpd = math.sqrt((math.pow(tmplat, 2) + math.pow(tmplon, 2)))
+        return tmpd
+    if whatmetric == 2:
+        tmpd = max(tmplon, tmplat)
+        return tmpd
+    if whatmetric == 3:
+        tmpd = tmplat+tmplon
+        return tmpd
 
 
-def astar(cost, neighbors, start, goal, nodes, lat, lon, delat, delon, adjlf):
-    frontier = PriorityQueue()
-    frontier.put(start, 0)
-    came_from = {}
-    cost_so_far = {}
-    came_from[start] = None
-    cost_so_far[start] = 0
 
-    while not frontier.empty():
-        current = frontier.get()
+def astar(weight, adjs, start, goal, nodes, lat, lon, delat, delon, adjlf, whatmetric):
+    q = PriorityQueue()
+    q.put(start, 0)
+    p = {}
+    d = {}
+    p[start] = None
+    d[start] = 0
 
-        if current == goal:
+    while not q.empty():
+        u = q.get()
+
+        if u == goal:
             break
 
-        for next in neighbors.get(current):
-            new_cost = cost_so_far[current] + cost.get(current.__str__() + ', ' + next.__str__())
-            if next not in cost_so_far or new_cost < cost_so_far[next]:
-                cost_so_far[next] = new_cost
-                priority = new_cost + heuristic(goal, next, nodes, lat, lon, delat, delon, adjlf)
-                frontier.put(next, priority)
-                came_from[next] = current
+        for v in adjs.get(u):
+            new_d = d[u] + weight.get(u.__str__() + ', ' + v.__str__())
+            if v not in d or new_d < d[v]:
+                d[v] = new_d
+                priority = new_d + heuristic(goal, v, nodes, lat, lon, delat, delon, adjlf, whatmetric)
+                q.put(v, priority)
+                p[v] = u
 
-    return came_from, cost_so_far
+    return d, p
