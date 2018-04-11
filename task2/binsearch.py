@@ -25,15 +25,12 @@ def binsearch(lst, x):
             left = i + 1
     return None
 
-def binsearchl(lst, x):
-    left = 0
-    right = len(lst)
-    while left != right:
-        i = (left + right) // 2
-        if x == i:
-            return i
-        elif x > lst[i]:
-            right = i
-        else:
-            left = i + 1
-    return None
+def findlatlon(i, nodes, lat, lon, delat, delon):
+    node = nodes[binsearch_node(nodes, i)]
+    y = float(node.attrs["lat"])
+    x = float(node.attrs["lon"])
+    k = binsearch(lat, y)
+    l = binsearch(lon, x)
+    dey = delat[k]
+    dex = delon[l]
+    return dex, dey
