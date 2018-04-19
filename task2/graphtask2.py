@@ -6,7 +6,7 @@ import dijkstra
 import binsearch as b
 import astarsearch as a
 import time
-import levitq
+import levit
 import task2
 
 
