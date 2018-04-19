@@ -1,7 +1,7 @@
 import dijkstra
 import astarsearch as a
 import time
-import levitq
+import levit
 import random
 import task2
 
